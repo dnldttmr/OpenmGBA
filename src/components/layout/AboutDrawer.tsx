@@ -12,27 +12,27 @@ export function AboutDrawer() {
         className="fixed inset-0 z-10 bg-black/50"
         onClick={() => toggleAboutDrawer(false)}
       />
-      <aside className="fixed inset-y-0 right-0 z-20 flex w-80 flex-col border-l border-neutral-800 bg-neutral-900 p-4 text-neutral-100">
+      <aside className="fixed inset-y-0 right-0 z-20 flex w-80 flex-col border-l border-neutral-800 bg-neutral-950 p-4 text-neutral-100">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold">About</h2>
+          <h2 className="font-mono text-base font-semibold">Über</h2>
           <button
             type="button"
             onClick={() => toggleAboutDrawer(false)}
             className="rounded-md px-2 py-1 text-sm text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
           >
-            Close
+            Schließen
           </button>
         </div>
         <p className="text-sm text-neutral-300">
-          OpenmGBA is a browser-based Game Boy Advance emulator front end.
+          OpenmGBA ist ein browserbasiertes Game Boy Advance Emulator-Frontend.
         </p>
         <a
           href="https://github.com/dnldttmr/OpenmGBA"
           target="_blank"
           rel="noreferrer"
-          className="mt-4 text-sm text-neutral-400 underline hover:text-neutral-100"
+          className="mt-4 text-sm text-violet-400 underline hover:text-violet-300"
         >
-          View on GitHub
+          Auf GitHub ansehen
         </a>
       </aside>
     </>

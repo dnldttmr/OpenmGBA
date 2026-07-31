@@ -18,13 +18,13 @@ export function PlayerScreen() {
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950 text-neutral-100">
-      <header className="flex h-14 shrink-0 items-center gap-4 border-b border-neutral-800 bg-neutral-900 px-4">
+      <header className="flex h-14 shrink-0 items-center gap-4 border-b border-neutral-800 bg-neutral-950 px-4">
         <button
           type="button"
           onClick={() => setActiveRom(null)}
-          className="rounded-md px-3 py-1.5 text-sm text-neutral-300 hover:bg-neutral-800 hover:text-neutral-100"
+          className="rounded-md px-3 py-1.5 font-mono text-sm text-neutral-300 hover:bg-neutral-800 hover:text-neutral-100"
         >
-          ← Library
+          ← Bibliothek
         </button>
         <span className="truncate text-sm text-neutral-400">
           {rom?.header.title || rom?.fileName}
@@ -42,7 +42,7 @@ export function PlayerScreen() {
         </>
       ) : (
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-sm text-neutral-500">ROM not found.</p>
+          <p className="text-sm text-neutral-500">ROM nicht gefunden.</p>
         </div>
       )}
     </div>
