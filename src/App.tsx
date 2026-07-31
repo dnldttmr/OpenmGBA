@@ -1,7 +1,7 @@
-import { AppLayout } from './components/layout/AppLayout'
+import { LibraryScreen } from './screens/LibraryScreen'
 
 function App() {
-  return <AppLayout />
+  return <LibraryScreen />
 }
 
 export default App

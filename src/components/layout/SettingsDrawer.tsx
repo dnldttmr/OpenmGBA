@@ -1,11 +1,8 @@
 import { useEmulatorStore } from '../../store/emulatorStore'
-import { useLibraryStore } from '../../store/libraryStore'
-import { FolderSelector } from '../library/FolderSelector'
 
 export function SettingsDrawer() {
   const isOpen = useEmulatorStore((state) => state.isSettingsDrawerOpen)
   const toggleSettingsDrawer = useEmulatorStore((state) => state.toggleSettingsDrawer)
-  const roms = useLibraryStore((state) => state.roms)
 
   if (!isOpen) return null
 
@@ -26,16 +23,7 @@ export function SettingsDrawer() {
             Close
           </button>
         </div>
-        <FolderSelector />
-        {roms.length > 0 && (
-          <ul className="mt-4 flex flex-col gap-1 overflow-y-auto text-sm text-neutral-300">
-            {roms.map((rom) => (
-              <li key={rom.id} className="truncate rounded-md px-2 py-1 hover:bg-neutral-800">
-                {rom.header.title || rom.fileName}
-              </li>
-            ))}
-          </ul>
-        )}
+        <p className="text-sm text-neutral-500">Folder management is coming soon.</p>
       </aside>
     </>
   )
