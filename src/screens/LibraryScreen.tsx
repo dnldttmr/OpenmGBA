@@ -8,6 +8,7 @@ export function LibraryScreen() {
   const roms = useLibraryStore((state) => state.roms)
   const isScanning = useLibraryStore((state) => state.isScanning)
   const scanError = useLibraryStore((state) => state.scanError)
+  const setActiveRom = useLibraryStore((state) => state.setActiveRom)
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950 text-neutral-100">
@@ -25,16 +26,19 @@ export function LibraryScreen() {
         ) : (
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {roms.map((rom) => (
-              <li
-                key={rom.id}
-                className="flex flex-col gap-1 rounded-md border border-neutral-800 bg-neutral-900 p-3"
-              >
-                <span className="truncate text-sm font-medium">
-                  {rom.header.title || rom.fileName}
-                </span>
-                {rom.header.gameCode && (
-                  <span className="truncate text-xs text-neutral-500">{rom.header.gameCode}</span>
-                )}
+              <li key={rom.id}>
+                <button
+                  type="button"
+                  onClick={() => setActiveRom(rom.id)}
+                  className="flex w-full flex-col gap-1 rounded-md border border-neutral-800 bg-neutral-900 p-3 text-left hover:border-neutral-700 hover:bg-neutral-800"
+                >
+                  <span className="truncate text-sm font-medium">
+                    {rom.header.title || rom.fileName}
+                  </span>
+                  {rom.header.gameCode && (
+                    <span className="truncate text-xs text-neutral-500">{rom.header.gameCode}</span>
+                  )}
+                </button>
               </li>
             ))}
           </ul>
