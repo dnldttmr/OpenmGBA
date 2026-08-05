@@ -1,2 +1,2 @@
-# OpenmGBA
+# RetroPlay
 To be defined
