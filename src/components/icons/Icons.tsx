@@ -95,6 +95,23 @@ export function PlayCircleIcon(props: IconProps) {
   )
 }
 
+export function TrashIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 7h16M9 7V4.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V7M18 7l-.8 12.1a2 2 0 0 1-2 1.9H8.8a2 2 0 0 1-2-1.9L6 7" />
+    </Icon>
+  )
+}
+
+export function RefreshIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M4 12a8 8 0 0 1 14.5-4.6M20 12a8 8 0 0 1-14.5 4.6" />
+      <path d="M18.5 3v4.4H14.1M5.5 21v-4.4h4.4" />
+    </Icon>
+  )
+}
+
 export function FlameIcon(props: IconProps) {
   return (
     <Icon {...props}>

@@ -1,23 +1,33 @@
+import { useEffect, useRef } from 'react'
 import { Toolbar } from '../components/layout/Toolbar'
 import { SettingsDrawer } from '../components/layout/SettingsDrawer'
 import { AboutDrawer } from '../components/layout/AboutDrawer'
 import { Sidebar } from '../components/library/Sidebar'
 import { FolderPlusIcon, GamepadIcon, InfoIcon } from '../components/icons/Icons'
 import { useLibraryStore } from '../store/libraryStore'
-import { useFolderPicker } from '../hooks/useFolderPicker'
+import { useFolderManager } from '../hooks/useFolderManager'
 
 export function LibraryScreen() {
   const roms = useLibraryStore((state) => state.roms)
   const setActiveRom = useLibraryStore((state) => state.setActiveRom)
-  const { inputRef, isScanning, scanError, handleChange, pickFolder } = useFolderPicker()
+  const { inputRef, isScanning, scanError, handleFallbackChange, addFolder, restorePersistedFolders } =
+    useFolderManager()
+  const hasRestoredFolders = useRef(false)
+
+  useEffect(() => {
+    if (hasRestoredFolders.current) return
+    hasRestoredFolders.current = true
+    void restorePersistedFolders()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950 text-neutral-100">
       <Toolbar />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar onPickFolder={pickFolder} isScanning={isScanning} />
+        <Sidebar onPickFolder={addFolder} isScanning={isScanning} />
         <main className="relative flex flex-1 flex-col overflow-y-auto p-8">
-          <input ref={inputRef} type="file" multiple className="hidden" onChange={handleChange} />
+          <input ref={inputRef} type="file" multiple className="hidden" onChange={handleFallbackChange} />
           {scanError && <p className="mb-4 text-sm text-red-400">{scanError}</p>}
 
           {roms.length === 0 ? (
@@ -38,7 +48,7 @@ export function LibraryScreen() {
                 </p>
                 <button
                   type="button"
-                  onClick={pickFolder}
+                  onClick={addFolder}
                   disabled={isScanning}
                   className="flex items-center gap-2 rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
