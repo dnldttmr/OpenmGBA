@@ -27,7 +27,7 @@ export function AboutDrawer() {
           OpenmGBA ist ein browserbasiertes Game Boy Advance Emulator-Frontend.
         </p>
         <a
-          href="https://github.com/dnldttmr/OpenmGBA"
+          href="https://github.com/dnldttmr/RetroPlay"
           target="_blank"
           rel="noreferrer"
           className="mt-4 text-sm text-violet-400 underline hover:text-violet-300"
