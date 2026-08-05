@@ -1,7 +1,9 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useLibraryStore } from '../store/libraryStore'
+import { useRecentlyPlayedStore } from '../store/recentlyPlayedStore'
 import { useMgba } from '../hooks/useMgba'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import { CanvasContainer } from '../components/layout/CanvasContainer'
 import { ControlOverlay } from '../components/layout/ControlOverlay'
 
@@ -9,6 +11,7 @@ export function PlayerScreen() {
   const { romId } = useParams<{ romId: string }>()
   const activeRomId = romId ? decodeURIComponent(romId) : null
   const roms = useLibraryStore((state) => state.roms)
+  const recordPlayed = useRecentlyPlayedStore((state) => state.recordPlayed)
   const navigate = useNavigate()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -17,6 +20,12 @@ export function PlayerScreen() {
   const { isReady, isPlaying, error, play, pause, reset } = useMgba(canvasRef, rom?.data ?? null, {
     fileName: rom?.fileName,
   })
+
+  useDocumentTitle(`${rom?.header.title || rom?.fileName || 'Bibliothek'} · OpenmGBA`)
+
+  useEffect(() => {
+    if (isReady && rom) recordPlayed(rom.id)
+  }, [isReady, rom, recordPlayed])
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950 text-neutral-100">

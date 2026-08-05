@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Toolbar } from '../components/layout/Toolbar'
 import { SettingsDrawer } from '../components/layout/SettingsDrawer'
@@ -6,10 +6,25 @@ import { AboutDrawer } from '../components/layout/AboutDrawer'
 import { Sidebar } from '../components/library/Sidebar'
 import { FolderPlusIcon, GamepadIcon, InfoIcon } from '../components/icons/Icons'
 import { useLibraryStore } from '../store/libraryStore'
+import { useRecentlyPlayedStore } from '../store/recentlyPlayedStore'
 import { useFolderManager } from '../hooks/useFolderManager'
+import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
-export function LibraryScreen() {
+export type LibraryView = 'all' | 'game-boy-advance' | 'recently-played'
+
+const VIEW_META: Record<LibraryView, { heading: string }> = {
+  all: { heading: 'Alle Spiele' },
+  'game-boy-advance': { heading: 'Game Boy Advance' },
+  'recently-played': { heading: 'Kürzlich gespielt' },
+}
+
+interface LibraryScreenProps {
+  view: LibraryView
+}
+
+export function LibraryScreen({ view }: LibraryScreenProps) {
   const roms = useLibraryStore((state) => state.roms)
+  const lastPlayedByRomId = useRecentlyPlayedStore((state) => state.lastPlayedByRomId)
   const navigate = useNavigate()
   const { inputRef, isScanning, scanError, handleFallbackChange, addFolder, restorePersistedFolders } =
     useFolderManager()
@@ -21,6 +36,16 @@ export function LibraryScreen() {
     void restorePersistedFolders()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const displayedRoms = useMemo(() => {
+    if (view !== 'recently-played') return roms
+    return roms
+      .filter((rom) => lastPlayedByRomId[rom.id] != null)
+      .sort((a, b) => lastPlayedByRomId[b.id] - lastPlayedByRomId[a.id])
+  }, [roms, view, lastPlayedByRomId])
+
+  const { heading } = VIEW_META[view]
+  useDocumentTitle(`${heading} · OpenmGBA`)
 
   return (
     <div className="flex h-screen flex-col bg-neutral-950 text-neutral-100">
@@ -62,11 +87,15 @@ export function LibraryScreen() {
                 </p>
               </div>
             </div>
+          ) : displayedRoms.length === 0 ? (
+            <div className="flex flex-1 items-center justify-center">
+              <p className="text-sm text-neutral-500">Noch keine Spiele gespielt.</p>
+            </div>
           ) : (
             <>
-              <h1 className="mb-6 font-serif text-2xl">Alle Spiele</h1>
+              <h1 className="mb-6 font-serif text-2xl">{heading}</h1>
               <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                {roms.map((rom) => (
+                {displayedRoms.map((rom) => (
                   <li key={rom.id}>
                     <button
                       type="button"

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useLibraryStore } from '../../store/libraryStore'
+import { useRecentlyPlayedStore } from '../../store/recentlyPlayedStore'
 import {
   FlameIcon,
   FolderPlusIcon,
@@ -16,7 +17,10 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onPickFolder, isScanning }: SidebarProps) {
-  const hasRoms = useLibraryStore((state) => state.roms.length > 0)
+  const roms = useLibraryStore((state) => state.roms)
+  const hasRoms = roms.length > 0
+  const lastPlayedByRomId = useRecentlyPlayedStore((state) => state.lastPlayedByRomId)
+  const hasRecentlyPlayed = roms.some((rom) => lastPlayedByRomId[rom.id] != null)
 
   return (
     <aside className="flex w-64 shrink-0 flex-col gap-6 overflow-y-auto border-r border-neutral-800 px-4 py-6">
@@ -31,7 +35,12 @@ export function Sidebar({ onPickFolder, isScanning }: SidebarProps) {
       </button>
 
       <nav className="flex flex-col gap-1 font-mono text-sm">
-        <SidebarItem icon={<PlayCircleIcon className="h-4 w-4" />} label="Kürzlich gespielt" disabled />
+        <SidebarItem
+          icon={<PlayCircleIcon className="h-4 w-4" />}
+          label="Kürzlich gespielt"
+          to="/recently-played"
+          disabled={!hasRecentlyPlayed}
+        />
         <SidebarItem icon={<FolderPlusIcon className="h-4 w-4" />} label="Kürzlich hinzugefügt" disabled />
         <SidebarItem icon={<FlameIcon className="h-4 w-4" />} label="Meistgespielt" disabled />
         <SidebarItem icon={<GridIcon className="h-4 w-4" />} label="Alle Spiele" to="/" end />
