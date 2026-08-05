@@ -1,12 +1,16 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { LibraryScreen } from './screens/LibraryScreen'
 import { PlayerScreen } from './screens/PlayerScreen'
-import { useLibraryStore } from './store/libraryStore'
-import { useHistorySync } from './hooks/useHistorySync'
 
 function App() {
-  const activeRomId = useLibraryStore((state) => state.activeRomId)
-  useHistorySync()
-  return activeRomId ? <PlayerScreen /> : <LibraryScreen />
+  return (
+    <Routes>
+      <Route path="/" element={<LibraryScreen />} />
+      <Route path="/game-boy-advance" element={<LibraryScreen />} />
+      <Route path="/game-boy-advance/game/:romId" element={<PlayerScreen />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }
 
 export default App

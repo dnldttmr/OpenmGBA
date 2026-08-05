@@ -1,13 +1,15 @@
 import { useMemo, useRef } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useLibraryStore } from '../store/libraryStore'
 import { useMgba } from '../hooks/useMgba'
 import { CanvasContainer } from '../components/layout/CanvasContainer'
 import { ControlOverlay } from '../components/layout/ControlOverlay'
 
 export function PlayerScreen() {
-  const activeRomId = useLibraryStore((state) => state.activeRomId)
+  const { romId } = useParams<{ romId: string }>()
+  const activeRomId = romId ? decodeURIComponent(romId) : null
   const roms = useLibraryStore((state) => state.roms)
-  const setActiveRom = useLibraryStore((state) => state.setActiveRom)
+  const navigate = useNavigate()
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const rom = useMemo(() => roms.find((r) => r.id === activeRomId) ?? null, [roms, activeRomId])
@@ -21,7 +23,7 @@ export function PlayerScreen() {
       <header className="flex h-14 shrink-0 items-center gap-4 border-b border-neutral-800 bg-neutral-950 px-4">
         <button
           type="button"
-          onClick={() => setActiveRom(null)}
+          onClick={() => navigate('/game-boy-advance')}
           className="rounded-md px-3 py-1.5 font-mono text-sm text-neutral-300 hover:bg-neutral-800 hover:text-neutral-100"
         >
           ← Bibliothek
