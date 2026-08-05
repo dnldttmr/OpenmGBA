@@ -80,7 +80,15 @@ export function useMgba(
 
     return () => {
       cancelled = true
-      moduleRef.current?.quitMgba()
+      try {
+        // The Emscripten runtime unwinds its C stack by throwing on exit;
+        // left uncaught, that exception surfaces during this unmount and
+        // takes the whole React tree down with it (blank screen on navigating
+        // away from the player, even though the route itself is fine).
+        moduleRef.current?.quitMgba()
+      } catch (err) {
+        console.error('Failed to cleanly shut down the mGBA core', err)
+      }
       moduleRef.current = null
       setIsReady(false)
       setIsPlaying(false)
