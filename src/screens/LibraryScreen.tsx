@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Toolbar } from '../components/layout/Toolbar'
 import { SettingsDrawer } from '../components/layout/SettingsDrawer'
 import { AboutDrawer } from '../components/layout/AboutDrawer'
@@ -9,7 +10,7 @@ import { useFolderManager } from '../hooks/useFolderManager'
 
 export function LibraryScreen() {
   const roms = useLibraryStore((state) => state.roms)
-  const setActiveRom = useLibraryStore((state) => state.setActiveRom)
+  const navigate = useNavigate()
   const { inputRef, isScanning, scanError, handleFallbackChange, addFolder, restorePersistedFolders } =
     useFolderManager()
   const hasRestoredFolders = useRef(false)
@@ -69,7 +70,7 @@ export function LibraryScreen() {
                   <li key={rom.id}>
                     <button
                       type="button"
-                      onClick={() => setActiveRom(rom.id)}
+                      onClick={() => navigate(`/game-boy-advance/game/${encodeURIComponent(rom.id)}`)}
                       className="flex w-full flex-col gap-1 rounded-lg border border-neutral-800 bg-neutral-900 p-3 text-left transition-colors hover:border-violet-500/60 hover:bg-neutral-800"
                     >
                       <span className="truncate text-sm font-medium">
