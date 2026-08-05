@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/OpenmGBA/',
+  base: '/RetroPlay/',
   plugins: [react(), tailwindcss()],
   // mGBA-wasm uses threads (SharedArrayBuffer), which requires cross-origin isolation.
   server: {
